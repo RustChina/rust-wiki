@@ -8,6 +8,6 @@ format: Markdown
 
 本 Wiki 使用 [Gitit](https://github.com/jgm/gitit) 搭建，Gitit 借助 pandoc 强大功能，支持各种文本标记格式(Markdown, Media Wiki, Asciidoc, Textile, reStructuredText, Tex等)，同时也可以导出成各种格式，方便阅读；使用版本管理系统 git, hg, darcs 等，无需数据库，方便迁移(后期如果有人感兴趣可以用Rust写一个)。
 
-目前本 Wiki 处于测试中，大家可以尝试使用，测试结束之后 [tennix](https://github.com/tennix) 会将该 wiki 重置，正式上线，届时 wiki 页面会同步到 github 上面。这里使用了 github 认证，编辑页面会自动以 github 帐号提交，为了直观地编辑，不采用 github PR 形式，请大家直接在这里编辑，或者如果你的编辑器支持这里的格式，也可以直接在你喜欢的编辑器里编辑，然后再粘贴到这里，为保证渲染不出问题，发布前请先预览一下。
+本 Wiki 使用 github 认证，编辑页面会自动以 github 帐号提交，为了直观地编辑，不采用 github PR 形式，请大家直接在这里编辑，或者如果你的编辑器支持这里的格式，也可以直接在你喜欢的编辑器里编辑，然后再粘贴到这里，为保证渲染不出问题，发布前请先预览一下。
 
-欢迎大家试用，有什么意见或建议也可以告知我
+[Rust和Crates国内镜像](国内镜像)
