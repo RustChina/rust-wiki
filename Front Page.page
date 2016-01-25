@@ -4,11 +4,12 @@ format: Markdown
 
 # Rust 中文 Wiki
 
-编辑前查看请查看[帮助页](Help)，新建一个 Wiki 页面只需创建一个链接，然后再跟着这个链接。
+编辑前查看请查看[帮助页](Help)，新建一个 Wiki 页面只需创建一个链接，然后在预览里面点击这个链接，跳到新页面里面进行编辑。
 
 本 Wiki 使用 [Gitit](https://github.com/jgm/gitit) 搭建，Gitit 借助 pandoc 强大功能，支持各种文本标记格式(Markdown, Media Wiki, Asciidoc, Textile, reStructuredText, Tex等)，同时也可以导出成各种格式，方便阅读；使用版本管理系统 git, hg, darcs 等，无需数据库，方便迁移(后期如果有人感兴趣可以用Rust写一个)。
 
-本 Wiki 使用 github 认证，编辑页面会自动以 github 帐号提交，为了直观地编辑，不采用 github PR 形式，请大家直接在这里编辑，或者如果你的编辑器支持这里的格式，也可以直接在你喜欢的编辑器里编辑，然后再粘贴到这里，为保证渲染不出问题，发布前请先预览一下。
+本 Wiki 使用 github 认证，编辑页面会自动以 github 帐号提交，为了直观地编辑，不采用 github PR 形式，请大家直接在这里编辑，或者如果你的编辑器支持这里的格式，也可以直接在你喜欢的编辑器里编辑，然后再粘贴到这里，为保证渲染不出问题，发布前请先预览一下。保存编辑后，Wiki 会同步更新到 [RustChina Wiki](https://github.com/RustChina/rust-wiki) 项目中去。
 
 * [Rust相关资源](Rust资源)
 * [Rust和Crates国内镜像](国内镜像)
+* [GitHub 项目 README](/README.md)
