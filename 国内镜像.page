@@ -1,0 +1,28 @@
+---
+format: Markdown
+...
+
+Rust编译器发布版本以及官方仓库都是存储在美区 AWS S3 上面的，这项云存储服务在国内是被 GFW 屏蔽了的，所以在下载编译器和构建 Rust 项目下载依赖时很容易失败，新手在尝试 Rust 时请记住这不是 Rust 本身的问题，而是万恶的 GFW 干的坏事。
+
+在 Rust 中文社区的努力下，[中科大开源镜像站](https://mirrors.ustc.edu.cn) 收录了 Rust 和 Crates。有了镜像站国内 Rust 爱好者就可以愉快地玩 Rust 语言了，感谢他们为我们提供高速的镜像服务。
+
+## Rust 编译器
+
+使用镜像方式比较简单，直接到 https://mirrors.ustc.edu.cn/rust-static/dist/ 下载对应平台的安装包就可以了，例如 Linux 64位系统下载 rust-1.6.0-x86_64-unknown-linux-gnu.tar.gz，Windows 下载 rust-1.6.0-x86_64-pc-windows-msvc.exe 或 rust-1.6.0-x86_64-pc-windows-gnu.exe，[关于 Windows 下 msvc 与 gnu 版的区别](msvc 与 gnu 版本的区别)，Mac 64位平台则下载 rust-1.6.0-x86_64-apple-darwin.tar.gz。
+
+早期 Rust 发布是将编译器、包管理器、标准库以及文档都打包到一起发布的，现在除了这种方式外，官方还提供了各个组件单独的压缩包，可以在镜像站里面找到对应的包。对于新手来说，建议下载整合的安装包。
+
+如果使用官方提供的 [multirust](https://github.com/brson/multirust) 脚本，则可以将 `RUSTUP_DIST_SERVER` 环境变量设置为 `https://mirrors.ustc.edu.cn/rust-static`。
+如果使用 Rust 实现的 [multirust](https://github.com/Diggsey/multirust-rs)，则需要将 `MULTIRUST_DIST_ROOT` 环境设置为 `https://mirrors.ustc.edu.cn/rust-static`
+
+
+## Cargo 包管理
+
+Rust 包管理使用 crate 格式的压缩包存储和发布库，官方有一个集中式的[仓库](https://crates.io)，由于其使用了动态网站技术，给镜像增加了难度，不过在 Rust 社区努力下，中科大也加入了对 crates.io 的支持，实现方式见[这个讨论](https://github.com/ustclug/mirrorrequest/issues/16)。
+
+使用镜像只需要在项目根目录下新建一个 .cargo/config 文件，并在其中加入以下内容：
+```conf
+[registry]
+index = "git://crates.mirrors.ustc.edu.cn/index"
+```
+之后 `cargo build` 和 `cargo run` 下载依赖时就会从镜像下载。如果项目要发到 github 等公开仓库，你可能还需要将 .cargo/config 文件加入 gitignore
