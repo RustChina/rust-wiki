@@ -1,0 +1,173 @@
+---
+format: Markdown
+...
+
+**Note**: 以下内容摘自[zonyitoo大神](https://github.com/zonyitoo)在Rust中文论坛[rust的lifetime的作用](http://rust.cc/t/rustde-lifetimede-zuo-yong/712/7)这篇帖子中的回复
+
+Lifetime你可以理解为作用域。
+显式的Lifetime标识是用来明确地告诉编译器Lifetime需要满足的约束条件，比如
+
+```rust
+fn test<'a, 'b>(v1: &'a str, v2: &'b str) -> &'a str {
+    v1
+}
+```
+
+在这里，约束返回值的Lifetime必须大于或等于函数第一个参数的Lifetime。因此这个函数这么写也是可以的：
+
+```rust
+fn test<'a, 'b>(v1: &'a str, v2: &'b str) -> &'a str {
+    "abcdefg"
+}
+```
+
+在这里，字符串`"abcdefg"`的类型是&'static str，它的Lifetime是`'static`，因此它肯定至少比任意传入的v1的Lifetime都要长，即`'static >= 'a`满足，所以编译就可以通过。
+
+Lifetime要解决什么问题？其中一个就是要解决Dangling pointer的问题，比如
+
+```rust
+fn dangling<'a>() -> &'a i32 {
+    let local_var: i32 = 1;
+    &local_var
+}
+```
+
+熟悉C/C++的同学应该知道，这属于返回栈变量。在C/C++中是无法很好地判断的，只能看编译器能不能分析出来。而在Rust，它是一定不可能编译过的，因为栈上这是`local_var`无论如何都满足不了>= `'a`的Lifetime。
+
+这里返回值的'a就是函数的返回值的作用域。比如
+
+```rust
+fn evil() {
+    // ...
+    let ret = dangling();
+    //
+}
+```
+
+在这里，`'a`就是`evil`函数体。
+
+如上所说，Lifetime其实就是一种泛型变量，在编译时编译器会把一个变量的真正Lifetime代入到那个泛型参数中，然后再做Type check验证是否满足条件，来实现保证内存安全的目的。
+
+Lifetime之间是可以有依赖的，比如还是刚才的例子，如果我想单独地给返回值的Lifetime命名为`'c`应该怎么办呢？
+
+```rust
+fn test<'a, 'b, 'c>(v1: &'a str, v2: &'b str) -> &'c str {
+    v1
+}
+```
+
+这样编译时编译器就会说，不能判断`v1 live longer than 'c`，因此编译错误。那如果你想表达的是`’a`至少比`'c`长应该怎么办？
+
+```rust
+fn test<'a: 'c, 'b, 'c>(v1: &'a str, v2: &'b str) -> &'c str {
+    v1
+}
+```
+
+Rust的语法一致性还是很好的。
+
+关于Lifetime到底是怎么推导的，不妨看一下这段程序：
+
+```rust
+fn echo<'a>(a: &'a str) -> &'a str {
+    a
+}
+```
+
+如上这个函数`echo`，它接受一个参数`a`，然后直接把它返回回去，返回值的Lifetime与参数一致。那么如果有如下调用
+
+```rust
+let ret = echo("hello world");
+```
+
+那么我们就开始推导，首先`"hello world"`的类型是`&'static str`，代入到`echo`中，`'a = 'static`，因此返回值ret的类型就是`&'static str`。验证结论的方法是
+
+```rust
+let ret: &'static str = echo("hello world");
+```
+
+并不会报错。
+
+那么如果我们传别的呢？
+
+```rust
+fn outer() {
+    // ... 其它代码
+
+    let string: String = "hello world".to_owned();
+    let ret = echo(&string[..]);
+
+    // ... 其它代码
+}
+```
+
+在这种情况下`'a`应该是什么呢？答案就是string的作用域（Scope），即`outer`函数体。
+
+那如果一个`struct`或`enum`带一个Lifetime是什么意思？不必把它们当作不同的东西来看，它们也都是泛型参数。如
+
+```rust
+struct StoreStr<'a> {
+    data: &'a str
+}
+```
+
+这里`'a`并不是指`StoreStr`这个`struct`的Lifetime，只是一个泛型参数（因为struct可以有许多个Lifetime参数，用于约束不同的`field`的Lifetime，实例的Lifetime应 `<=` 任意一个`field`的Lifetime），用于在实例化`StoreStr`的实例时填入当时的实际Lifetime，如
+
+```rust
+fn test() {
+    // ...
+    let a_string: String = "Hello world".to_owned();
+    let store = StoreStr { data: &a_string[..] };
+    // ...
+}
+```
+
+联系我上面所说的，`&a_string[..]`的Lifetime就是`test`函数体，因此这时`StoreStr`的泛型参数`'a`就是`test`函数体。这里变相约束了`store`的Lifetime一定不长于`a_string`。
+
+有什么用？那么就强制约束了`store`析构一定不会比`a_string`晚，因为如果`a_string`先析构了，`store.data`就成了Dangling pointer。
+
+有写过一些代码的同学，一定看过这样的代码
+
+```rust
+impl A {
+    fn member_func<'a>(&'a self) -> B<'a> {
+        B::new(self)
+    }
+}
+```
+
+这种会有什么特殊的呢？这个member_func里面，会利用A的一个实例self的borrowed pointer去构造一个B，而且B有一个Lifetime泛型参数，其中一定也有一个borrowed pointer借用了A中某一个field的数据。
+
+那么这就可以实现在创建的B的实例被释放之前，A的那个实例都是一个被borrow的状态，如
+
+```rust
+let mut mutable_a = A::new();
+let b = mutable_a.member_func(); // Create a B
+mutable_a.data += 1; // modify data in A. Compile Error!!!
+```
+
+这里最后一句的修改会导致编译错误。因为在这一句执行时，b并没有被销毁，因此mutable_a依然是immutable borrowed的状态，mutable_a.data需要mutable borrow，那么就会报错，编译器会说cannot mutable borrow mutable_a while it is also immutable borrowed类似的信息。
+
+那么如果我真的需要修改怎么办，简单，释放掉b就好了。
+
+```rust
+let mut mutable_a = A::new();
+{
+    let b = mutable_a.member_func(); // Create a B
+
+    // b will be destroyed
+}
+mutable_a.data += 1; // modify data in A. It works!
+```
+
+为什么要这么做？还是因为内存安全问题。熟悉C++的同学知道，STL里面的容器，如果你建了一个reference引用了容器中的数据，然后后面又修改了容器，那么就又会造成Dangling pointer的错误，例
+
+```rust
+vector<int> v { 1, 2, 3 };
+int& evil_alias = v[0];
+v.push_back(10); // !!! Danger!!!
+    
+// evil_alias may become a dangling pointer
+```
+
+总结：Lifetime完全可以用Scope来理解，它就是一种利用类型系统来保证内存安全的方法。
