@@ -13,3 +13,4 @@ format: Markdown
 * [Rust相关资源](Rust资源)
 * [Rust和Crates国内镜像](国内镜像)
 * [GitHub 项目 README](/README.md)
+* [Rust Lifetime 的作用](Rust-Lifetime)
