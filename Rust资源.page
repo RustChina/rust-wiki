@@ -2,6 +2,11 @@
 format: Markdown
 ...
 
+* [宾夕法尼亚大学Rust课程](http://cis198-2016s.github.io/)火热开课中。。。
 * [Awesome Rust](https://github.com/kud1ing/awesome-rust)
-* [Rust 中文社区](https://chat.rust-china.org)
+* Rust 中文社区： [即时聊天频道(活跃)](https://chat.rust-china.org)， [论坛(不活跃)](http://rust.cc)
+* Rust 官方论坛： [用户论坛](https://users.rust-lang.org), [语言内部开发论坛](https://internals.rust-lang.org)
+* [Rust 周刊](https://this-week-in-rust.org)，可邮件订阅
+* [Reddit 节点](https://www.reddit.com/r/rust)
+* IRC 服务器是 irc.mozilla.org，上面有各种活跃的频道：[#rust](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust), [#rust-beginners](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners), [#rust-osdev](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-osdev), [#rust-webdev](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-webdev), [#rust-gamedev](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-gamedev)
 * Rust 语言 QQ 群: 303838735 和 144605258
