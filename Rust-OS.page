@@ -1,0 +1,19 @@
+---
+format: Markdown
+...
+
+Rust 是一个真正的系统语言(System Programming Language)，可以用来写操作系统，目前已经有不少这样的项目了，下面列出一些用 Rust 实现的操作系统项目
+
+# Redox OS
+[Redox OS](http://www.redox-os.org) 是用 Rust 写的一个类 Unix 操作系统，微内核架构。这个项目是目前做得最认真的项目，已经实现很多功能，而且已经释放出 ISO 安装镜像。
+
+官网列出的一些特性：
+
+* 微内核(microkernel)
+* 大部分特性由 Rust 实现
+* GUI 界面(Orbital)
+* 给 C 程序用的 newlib
+* 驱动程序运行在用户空间(userspace)
+* ZFS 文件系统(实现中)
+* 包含常用 unix 命令
+* MIT 协议
