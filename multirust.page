@@ -1,0 +1,61 @@
+
+## 背景介绍
+
+Rust 项目本有三个版本： stable, beta, nightly 同时开发维护，其中 stable 里面的 API 会保证向后兼容，nightly 是每天或每隔几天编译出二进制版本释出，里面有一些实验性的特性 API 可能会时常变动，开发者测试一段时间后，保留下来会进入下一个 beta 版，beta 版再测试六周如果足够稳定就会进入再下一个 stable 版。stable 和 beta 都是每六周发布一个版本，三个版本同时递推演进。比如当前(2016-04-010)的 stable 版本是 1.7, beta 版本号是 1.8，nigitly 版本号是 1.9，其中 stable 和 beta 都是 2016-03-03 发布的，再过几天(2016-04-14) stable 就会变成 1.8，而 beta 则变成 1.9，按 Rust semver 规定，nightly 会变成 1.10。
+
+从设计初衷来讲，stable 是给生产用的，beta 供开发人员测试用，而 nightly 则是给 Rust 团队内部开发人员用的。理论上，普通开发人员不应该使用 nightly，但是老实讲，Rust 虽然 1.0 之后语法稳定下来了，但是标准库和社区相关项目现在还有好多没法用 stable 版本编译，因为用到了很多 nightly 才提供的特性，所以生产上讲当前 1.7-stable 版本依然是满足不了需求的，比如 Dropbox 在一些生产项目中使用的 Rust 也是 nightly 版本。不过按照 Rust 的演进速度和 Rust team 开发实力，再过几个版本应该就可以完全用 stable 版本写生产项目。
+
+基于上述原因，需要一个工具来管理 Rust 版本问题，最容易想到的当然是用 shell 写一个脚本来管理，这就是 [multirust.sh](https://github.com/brson/multirust)，不过很快就出现了 Rust 版本的 [multirust](https://github.com/rust-lang-nursery/multirust-rs)，前不久这个版本被 Rust 官方收进 [rust-lang-nursery](https://github.com/rust-lang-nursery/multirust-rs)，由官方团队维护，并为其加了个前端，现在统一由 `rustup` 命令调用，同时也有了 [rustup](https://www.rustup.rs)。所以以后 rustup 会是官方推荐的管理方式，这里只介绍 rustup，不过如果使用的是 multirust 本身的话，大多数情况也可以直接简单地将命令中的 `rustup` 改成 `multirust`。
+
+## 安装
+
+### Linux/Mac OSX
+
+直接在命令行里运行 `curl https://sh.rustup.rs -sSf | sh`
+
+### Windows
+
+Windows 环境有两种选择：原生 MSVC ABI 和 GNU ABI，前者需要安装 Visual Studio 2013 或以上版本，后者使用 GCC 工具链，如果需要与 Visual Studio 编译的工具和库交互，则使用前者，如果项目依赖的库是一些开源库，比如 openssl，建议使用后者。对于初学者而言，后者可能是一个更好的选择，网上很多开源项目对 MSVC 工具链支持并不好，使用 GCC 工具链可以减少很多麻烦。
+
+* MSVC ABI: 确保系统上安装了 [Visual Studio](https://www.visualstudio.com/downloads) 2013 或以上版本，然后根据自己需求下载
+    + [rustup-setup-msvc_32bit.exe](https://static.rust-lang.org/rustup/dist/i686-pc-windows-msvc/rustup-setup.exe)
+    + [rustup-setup-msvc_64bit.exe](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-setup.exe)
+* GNU ABI: 无需任何依赖
+    + [rustup-setup-gnu_32bit.exe](https://static.rust-lang.org/rustup/dist/i686-pc-windows-gnu/rustup-setup.exe)
+    + [rustup-setup-gnu_64bit.exe](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-setup.exe)
+
+实际上安装 MSVC 或 GNU ABI 都可以随时用 `rustup` 命令再切换到另一种 ABI 版本，比如如果下载安装的是 GNU ABI，则 `rustup update stable-msvc` 就可以切换到 MSVC ABI
+
+
+rustup 在 *nix 系统环境下会将 `$HOME/.cargo/bin` 添加到 `$PATH`，在 Windows 环境下则会将 `%USERPROFILE%\.cargo\bin` 添加到环境变量中，如果没有则自己手动添加，然后就可以使用 `rustup` 命令了。
+
+如果出问题了或者想完全卸载，直接运行 `rustup self uninstall` 即可
+
+
+## 版本管理
+
+### 更新
+
+* 更新所有安装的工具链： `rustup update`
+* 更新某个版本： `rustup update nightly`
+
+更新时可以指定环境变量 `RUSTUP_DIST_ROOT` 从镜像下载，例如 `export RUSTUP_DIST_ROOT=https://mirrors.ustc.edu.cn/rust-static` 使用中科大镜像
+
+### 指定版本
+
+* 设置系统默认版本： `rustup default nightly`
+* 设置某项目使用的 Rust 版本(随时可以切换)： `rustup override beta`
+
+### 跨平台编译
+
+* 添加工具链： `rustup target add arm-linux-androidabi`
+* 列出工具链： `rustup target list`
+
+跨平台编译详见[这里](cross-compilation)
+
+
+更多更详细的说明可以通过 `rustup help` 查看帮助或者参考[rustup 项目](https://github.com/rust-lang-nursery/multirust-rs)文档说明
+
+## 实现
+
+rustup 底层是调用的 Rust 版本的 [multirust](https://github.com/rust-lang-nursery/multirust-rs)，安装的时候会下载 rustup,rustc,cargo,rustdoc,multirust 等二进制可执行程序到 `$HOME/.cargo/bin`，然后版本相关的工具会放在 `$HOME/.multirust` 目录下，设置版本和工具链后，运行 rust 和 cargo 命令会被代理到 `$HOME/.multirust` 目录下真正的工具链，与 Ruby 里面的 rbenv, Python 里面的 pyenv 工作原理相似。
