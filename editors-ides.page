@@ -1,0 +1,65 @@
+[Are We IDE yet](https://areweideyet.com) 这个页面列出了 Rust 的编辑器和 IDE 支持情况，不过也有一段时间没更新了。
+
+这里尽量与各 editor/ide 支持情况保持更新，希望各位看到这个 wiki 的 Rustacean 共同维护这个页面
+
+目前编辑器和IDE代码补全后端基本都是使用 [Racer](https://github.com/phildawes/racer)，可以通过 `cargo install racer` 安装
+
+# Editor
+
+## Emacs
+
+通过 [MELPA 库](https://melpa.org/#/getting-started)安装 racer 插件
+
+```elisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+```
+
+然后通过 `M-x package-list` 找到 racer 插件并安装。同时推荐安装 [flycheck](http://www.flycheck.org/en/latest) 以及 flycheck-rust，配置如下
+
+```elisp
+;; 下载 rust 源码，推荐直接 `git clone --depth=1 https://github.com/rust-lang/rust`
+;; 然后将 path/to/rust/src/ 换成刚 clone 下来的 rust/src 具体路径，比如 ~/rust/src
+(setq racer-rust-src-path "path/to/rust/src/")
+;; racer 路径目录，比如通过 `cargo install racer` 安装的，
+;; 则将 path/to/racer/command 换成 ~/.cargo/bin
+(setq racer-cmd "path/to/racer/command")
+;; 设置 flycheck
+(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+
+(add-hook 'rust-mode-hook
+	  '(lambda ()
+	     (racer-mode)
+	     (flycheck-mode)
+	     (eldoc-mode)
+	     (company-mode) ;; 使用 company 作补全前端
+	     (local-set-key (kbd "M-.") #'racer-find-definition)
+	     (local-set-key (kbd "TAB") #'company-indent-or-complete-common)))
+```
+
+`M-.` 可以跳转到变量可函数定义的地方， `M-.` 跳回
+
+## Vim
+
+
+## Sublime Text
+
+
+## Atom
+
+
+## VS Code
+
+
+# IDE
+
+## IntelliJ IDEA
+
+
+## Visual Studio
+
+
+## Eclipse
+
+
+## 
