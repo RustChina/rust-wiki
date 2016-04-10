@@ -1,0 +1,62 @@
+很多新手刚入手时会对 Rust 这样一门偏底层的语言编译后得到的可执行文件的大小很不解，一个 hello-world 这么简单的程序居然要 600K，是 C/C++ hello-world 的几十倍。
+
+这里做实验来对比来解释一下
+
+## 实验环境
+
+* ArchLinux: 4.4.5-1-ARCH x86_64
+* GCC: 5.3.0
+* rustc: 1.7.0
+
+## 程序
+
+* Rust
+    ```rust
+    fn main() {
+        println!("Hello, World!");
+    }
+    ```
+* C
+    ```c
+    #include<stdio.h>
+    
+    int main() {
+        printf("Hello, World!\n");
+        return 0;
+    }
+    ```
+* C++
+    ```cpp
+    #include<iostream>
+
+    int main() {
+        std::cout << "Hello, World!" << std::endl;
+        return 0;
+    }
+    ```
+
+## 编译
+* Rust 版
+    + `rustc hello.rs -o hello_rust_static`
+    + `rustc hello.rs -C prefer-dynamic -o hello_rust_dynamic`
+    + `rustc hello.rs --target=x86_64-unknown-linux-musl -o hello_rust_static_musl`
+* C 版
+    + `gcc hello.c -static -o hello_c_static`
+    + `gcc hello.c -o hello_c_dynamic`
+* C++ 版
+    + `g++ hello.cpp -static -o hello_cpp_static`
+    + `g++ hello.cpp -o hello_cpp_dynamic`
+
+## 结果
+
+
+|         |    C    |    C++    |    Rust    |
+|---------|---------|-----------|------------|
+| static  |   788K  |   2.0M    |600K(glibc)/620K(musl)|
+| dynamic |   8.0K  |    12K    |    12K     |
+
+其中 Rust 620K 和 600K 分别是 [musl](http://www.musl-libc.org/) 和 glibc 库静态编译的，目前 Rust 使用 glibc 尚不支持完全编译成一个没有任何依赖的库，使用 musl 库则可以，不过 musl 当前还只能用 nightly 编译。
+
+所以上述例子中只有 `hello_c_static`, `hello_cpp_static` 和 `hello_rust_static_musl` 是没有任何依赖的二进制程序，用 `ldd` 命令检查会得到 `not a dynamic executable` 的提示，而 Rust 默认静态编译是把 Rust 标准库静态链接到程序里的，但仍然依赖于系统的一些动态链接库。如果以后对 glibc 可以完全静态链接的话，大小应该与 C++ 静态编译结果差不多。
+
+所以 Rust 编译生成的程序并没有比 C/C++ 大很多，而只是默认静态链接了标准库而已，并且与 C++ 编译后大小基本差不多
