@@ -37,7 +37,7 @@
 	     (local-set-key (kbd "TAB") #'company-indent-or-complete-common)))
 ```
 
-`M-.` 可以跳转到变量可函数定义的地方， `M-.` 跳回
+`M-.` 可以跳转到变量可函数定义的地方， `M-,` 跳回
 
 ## Vim
 
