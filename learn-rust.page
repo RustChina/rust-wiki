@@ -12,6 +12,7 @@ format: Markdown
 * [中文社区书 Rust Primer](https://github.com/rustcc/RustPrimer)
 * [宏高阶教程](https://danielkeep.github.io/tlborm/book/index.html)
 * [宾夕法尼亚大学 Rust Programming 课程](http://cis198-2016s.github.io)
+* [爱荷华大学 Programming Language Concepts 课程](http://homepage.cs.uiowa.edu/~achampion/teaching/plc/lectures.shtml)
 * [Rust 101 教程](https://www.ralfj.de/projects/rust-101/main.html)
 * [Rust for Pythonista](http://lucumr.pocoo.org/2015/5/27/rust-for-pythonistas)
 * [Rust for C++ Programmers](https://www.gitbook.com/book/aminb/rust-for-c/details)
