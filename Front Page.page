@@ -12,6 +12,7 @@ format: Markdown
 
 * [Rust相关资源](Rust资源)
 * [Rust和Crates国内镜像](国内镜像)
+* [Rust 版本和工具链管理](multirust)
 * [GitHub 项目 README](/README.md)
 * [Rust Lifetime 的作用](Rust-Lifetime)
 * [Rust Web开发](Rust-Web)
