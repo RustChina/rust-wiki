@@ -25,5 +25,6 @@ format: Markdown
 * [使用Rust实现FizzBuzz](http://chrismorgan.info/blog/rust-fizzbuzz.html)
 * [Rust外部接口](http://jakegoulding.com/rust-ffi-omnibus/)
 * [Rust函数签名](http://hoverbear.org/2015/07/10/reading-rust-function-signatures/)
+* [Learn You a Rust for Great Good](http://pro.theta.eu.org/2016/03/12/learn-you-a-rust-for-great-good.html)
 
 建议学习从[官方 book](https://doc.rust-lang.org/book)开始学习，英文不太好的可以先看[Rust 官方 book 中文翻译版](https://kaisery.gitbooks.io/rust-book-chinese/content)，期间可以跟着[宾夕法尼亚大学 Rust Programming 课程](http://cis198-2016s.github.io)的幻灯片一起学习。最好把 book 通读一遍后再开始看[rustbyexample](http://rustbyexample.com)，去 chat 或 QQ 群里面问问题，因为不通读一遍 book 直接去社区里面问的话，会浪费别人的时间，而且别人讲解时那些基本概念你可能都不知道
