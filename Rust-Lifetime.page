@@ -13,7 +13,7 @@ fn test<'a, 'b>(v1: &'a str, v2: &'b str) -> &'a str {
 }
 ```
 
-在这里，约束返回值的Lifetime必须大于或等于函数第一个参数的Lifetime。因此这个函数这么写也是可以的：
+在这里，约束在函数体内部返回值的Lifetime必须大于或等于函数第一个参数的Lifetime。因此这个函数这么写也是可以的：
 
 ```rust
 fn test<'a, 'b>(v1: &'a str, v2: &'b str) -> &'a str {
