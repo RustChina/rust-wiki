@@ -54,6 +54,17 @@
 # IDE
 
 ## IntelliJ IDEA
+IDEA 中有RUST的插件支持。该插件由开源社区维护，应该可以支持所有的IDEA的产品，包括IDEA的社区版。
+
+目前的版本是：Version: 0.1.0.1129
+
+相关信息：
+
+Change Notes
+https://intellij-rust.github.io/2016/10/24/changelog-16.html 
+
+Vendor
+https://github.com/intellij-rust/intellij-rust
 
 
 ## Visual Studio
