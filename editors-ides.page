@@ -41,6 +41,14 @@
 
 ## Vim
 
+- 安装[YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
+- `./install.py --racer-completer`
+- `cargo install racer`
+- [在`vimrc`中设置源代码路径](https://github.com/Valloric/YouCompleteMe#rust-semantic-completion)
+
+
+
+
 
 ## Sublime Text
 
