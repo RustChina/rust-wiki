@@ -20,12 +20,12 @@ Rust编译器发布版本以及官方仓库都是存储在美区 AWS S3 上面�
 
 ## Cargo 包管理
 
-Rust 包管理使用 crate 格式的压缩包存储和发布库，官方有一个集中式的[仓库](https://crates.io)，由于其使用了动态网站技术，给镜像增加了难度，不过在 Rust 社区努力下，中科大也加入了对 crates.io 的支持，实现方式见[这个讨论](https://github.com/ustclug/mirrorrequest/issues/16)。
+Rust 包管理使用 crate 格式的压缩包存储和发布库，官方有一个集中式的[仓库](https://crates.io)，由于其使用了动态网站技术，给镜像增加了难度，不过在 Rust 社区努力下，中科大也加入了[对 crates.io 的支持](https://lug.ustc.edu.cn/wiki/mirrors/help/rust-crates)，实现方式见[这个讨论](https://github.com/ustclug/mirrorrequest/issues/16)。
 
 使用镜像只需要在项目根目录下新建一个 .cargo/config 文件，并在其中加入以下内容：
 ```conf
 [registry]
-index = "git://crates.mirrors.ustc.edu.cn/index"
+index = "git://mirrors.ustc.edu.cn/crates.io-index"
 ```
 之后 `cargo build` 和 `cargo run` 下载依赖时就会从镜像下载。如果项目要发到 github 等公开仓库，你可能还需要将 .cargo/config 文件加入 gitignore
 
@@ -35,7 +35,7 @@ cargo 可以像 git 一样进行全局配置(似乎在multirust下不起作用)�
 mkdir -p $HOME/.cargo
 cat > $HOME/.cargo/config << EOF
 [registry]
-index = "git://crates.mirrors.ustc.edu.cn/index"
+index = "git://mirrors.ustc.edu.cn/crates.io-index"
 EOF
 ```
 有了 $HOME/.cargo/config 这个全局配置后，以后新建项目都会默认使用这个配置，项目目录下就不需要另行配置
