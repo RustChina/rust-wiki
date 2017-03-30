@@ -38,6 +38,15 @@ cat > $HOME/.cargo/config << EOF
 index = "git://mirrors.ustc.edu.cn/crates.io-index"
 EOF
 ```
+如果 cargo 版本为 0.13.0 或以上, 需要更改 $HOME/.cargo/config 为以下内容:
+```
+[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+replace-with = 'ustc'
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+```
+
 有了 $HOME/.cargo/config 这个全局配置后，以后新建项目都会默认使用这个配置，项目目录下就不需要另行配置
 
 *注意*：Windows 环境下通过文件管理器没法创建以点开头的目录，需要通过命令行创建 .cargo 目录
