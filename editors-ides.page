@@ -41,7 +41,7 @@
 
 ## Vim
 
-- 安装[YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
+- 安装 [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
 - `./install.py --racer-completer`
 - `cargo install racer`
 - [在`vimrc`中设置源代码路径](https://github.com/Valloric/YouCompleteMe#rust-semantic-completion)
@@ -58,11 +58,14 @@
 
 ## VS Code
 
+- 安装 [vscode-rust](https://github.com/editor-rs/vscode-rust)
+- `ext install vscode-rust`
+- 然后根据需求选择使用 Racer 还是 Rust Language Server (RLS)
 
 # IDE
 
 ## IntelliJ IDEA
-IDEA 中有RUST的插件支持。该插件由开源社区维护，应该可以支持所有的IDEA的产品，包括IDEA的社区版。
+IDEA 中有 RUST 的插件支持。该插件由开源社区维护，应该可以支持所有的 IDEA 的产品，包括 IDEA 的社区版。
 
 目前的版本是：Version: 0.1.0.1129
 
