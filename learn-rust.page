@@ -5,7 +5,7 @@ format: Markdown
 * [官方 book](https://doc.rust-lang.org/book)
 * [rustbyexample](http://rustbyexample.com)
 * [标准库](https://doc.rust-lang.org/stable/std)
-* [Rust 参考文档](https://doc.rust-lang.org/reference.html)
+* [Rust 参考文档](https://doc.rust-lang.org/reference)
 * [Cargo 文档](http://doc.crates.io/index.html)
 * [Rust 高阶黑魔法](https://doc.rust-lang.org/nomicon)
 * [Rust 官方 book 中文翻译版](https://kaisery.gitbooks.io/rust-book-chinese/content)
